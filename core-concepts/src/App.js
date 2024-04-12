@@ -1,5 +1,7 @@
+import React,{useState} from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { useEffect } from 'react';
 
 function App() {
   const nayoks =["Anwar","Jafor","Sergio","Alonso","Max","louis hamilton"];
@@ -19,9 +21,11 @@ function App() {
       <header className="App-header">
 
         <h1>List of F1 players</h1>
+        <Counter></Counter>
+        <Users></Users>
 
         {
-          products.map(x => <Product product={x}></Product>)
+          products.map( x => <Product product={x}></Product>)
         }
         {/* <Product product={products[0]}></Product>
         <Product product={products[1]}></Product>
@@ -29,7 +33,7 @@ function App() {
        <ul>
 
         {
-          nayoks.map(nayok => <li>{nayok}</li>)
+          nayoks.map( nayok => <li>{nayok}</li>)
         }
         {/* /* <li>{nayoks[0]}</li>
         <li>{nayoks[1]}</li>
@@ -54,6 +58,28 @@ function App() {
   );
 }
 
+//setting up the state
+function Counter(){
+  const[count,setCount] = useState(10);
+  // const handleIncrease = () => {
+    
+  //   setCount(count+1);
+  // };
+  // const handleDecrease = () => {
+  //   setCount (count - 1);
+  // };
+  
+  return(
+    <div>
+      <h1>Count: {count}</h1>
+      <button onClick={()=>setCount(count-1)}>Decrease</button>
+      <button onClick={()=>setCount(count+1)}>Increase</button>
+    </div>
+  )
+}
+
+
+
 //declaring a component
 function Product(props){
   const style = {
@@ -65,6 +91,8 @@ function Product(props){
     margin:'10px 10px',
     padding:'20px 10px'
   }
+
+  //Destructring 
 const {name,price} = props.product;
 console.log(name,price);
 
@@ -93,4 +121,27 @@ function Person(props){
     </div>
   )
 }
+
+function Users(){
+  const[users,setUsers] = useState([]);
+  useEffect(()=>{
+    fetch('https://jsonplaceholder.typicode.com/users')
+    .then(res => res.json())
+    .then(data => setUsers(data));
+  },[])
+  return(
+    <div>
+      <h3>Dynamic Users: {users.length}</h3>
+      <ul>
+       
+        {
+          users.map(user => <li>
+            {user.name}
+          </li>)
+        }
+      </ul>
+    </div>
+  )
+}
+
 export default App;
